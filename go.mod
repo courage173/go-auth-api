@@ -3,6 +3,7 @@ module github.com/courage173/quiz-api
 go 1.23.2
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-ozzo/ozzo-dbx v1.5.0
 	github.com/go-ozzo/ozzo-routing/v2 v2.4.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.1.0
@@ -10,6 +11,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/lib/pq v1.2.0
 	go.uber.org/zap v1.13.0
+	golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550
 )
 
 require (
