@@ -3,7 +3,7 @@ package storage
 import (
 	"sync"
 
-	"github.com/courage173/quiz-api/models"
+	"github.com/courage173/quiz-api/internal/models"
 )
 
 // Storage holds all in-memory data

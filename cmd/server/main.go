@@ -21,6 +21,9 @@ import (
 
 	"github.com/courage173/quiz-api/pkg/dbcontext"
 
+	"github.com/courage173/quiz-api/internal/errors"
+	"github.com/courage173/quiz-api/internal/healthcheck"
+
 	"github.com/courage173/quiz-api/pkg/log"
 
 	"net/http"
@@ -91,12 +94,6 @@ func main(){
 		Handler: buildHandler(logger, dbcontext.New(db)),
 	}
 
-	// http.HandleFunc("/yeah", func(w http.ResponseWriter, r *http.Request) {
-	// 	w.WriteHeader(http.StatusOK)
-    //     w.Write([]byte("Welcome to the Quiz API!"))
-    //     logger.Infof("Received request: %s %s", r.Method, r.URL.Path)
-	// })
-
 	// start the HTTP server with graceful shutdown
 	go routing.GracefulShutdown(hs, 10*time.Second, logger.Infof)
 	logger.Infof("server %v is running at %v", Version, address)
@@ -112,16 +109,12 @@ func buildHandler(logger log.Logger, db *dbcontext.DB) http.Handler {
 
 	router.Use(
 		accesslog.Handler(logger),
-		// errors.Handler(logger),
+	     errors.Handler(logger),
 		content.TypeNegotiator(content.JSON),
 		cors.Handler(cors.AllowAll),
 	)
 
-	// router.Get("/", func(c){
-	// 	w.Write([]byte("Welcome to the Quiz API!"))
-	// })
-
-	// healthcheck.RegisterHandlers(router, Version)
+	 healthcheck.RegisterHandlers(router, Version)
 
 	// rg := router.Group("/v1")
 

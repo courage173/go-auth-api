@@ -32,7 +32,15 @@ func Handler(logger log.Logger) routing.Handler{
 
 			if err != nil {
 				res := buildErrorResponse(err)
-
+				if res.StatusCode() == http.StatusInternalServerError {
+					l.Errorf("encountered internal server error: %v", err)
+				}
+				c.Response.WriteHeader(res.StatusCode())
+				if err = c.Write(res); err != nil {
+					l.Errorf("failed writing error response: %v", err)
+				}
+				c.Abort() 
+				err = nil 
 			}
 		}()
 
