@@ -85,11 +85,17 @@ func main(){
 		os.Exit(-1)
     }
 
-	address := "http://localhost:" + strconv.Itoa(port)
+	address := "localhost:" + strconv.Itoa(port)
 	hs := &http.Server{
 		Addr:    address,
 		Handler: buildHandler(logger, dbcontext.New(db)),
 	}
+
+	// http.HandleFunc("/yeah", func(w http.ResponseWriter, r *http.Request) {
+	// 	w.WriteHeader(http.StatusOK)
+    //     w.Write([]byte("Welcome to the Quiz API!"))
+    //     logger.Infof("Received request: %s %s", r.Method, r.URL.Path)
+	// })
 
 	// start the HTTP server with graceful shutdown
 	go routing.GracefulShutdown(hs, 10*time.Second, logger.Infof)
@@ -110,6 +116,10 @@ func buildHandler(logger log.Logger, db *dbcontext.DB) http.Handler {
 		content.TypeNegotiator(content.JSON),
 		cors.Handler(cors.AllowAll),
 	)
+
+	// router.Get("/", func(c){
+	// 	w.Write([]byte("Welcome to the Quiz API!"))
+	// })
 
 	// healthcheck.RegisterHandlers(router, Version)
 
