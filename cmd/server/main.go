@@ -2,16 +2,13 @@ package main
 
 import (
 	"context"
-	"log"
 	"strconv"
 
 	"database/sql"
 
 	"flag"
 
-	"github.com/courage173/quiz-api/pkg/dbcontext"
 	dbx "github.com/go-ozzo/ozzo-dbx"
-	"github.com/qiangxue/go-rest-api/pkg/accesslog"
 
 	routing "github.com/go-ozzo/ozzo-routing/v2"
 	"github.com/go-ozzo/ozzo-routing/v2/content"
@@ -19,6 +16,12 @@ import (
 	"github.com/go-ozzo/ozzo-routing/v2/cors"
 
 	_ "github.com/lib/pq"
+
+	"github.com/courage173/quiz-api/pkg/accesslog"
+
+	"github.com/courage173/quiz-api/pkg/dbcontext"
+
+	"github.com/courage173/quiz-api/pkg/log"
 
 	"net/http"
 
@@ -82,7 +85,7 @@ func main(){
 		os.Exit(-1)
     }
 
-	address := "localhost:" + strconv.Itoa(port)
+	address := "http://localhost:" + strconv.Itoa(port)
 	hs := &http.Server{
 		Addr:    address,
 		Handler: buildHandler(logger, dbcontext.New(db)),
