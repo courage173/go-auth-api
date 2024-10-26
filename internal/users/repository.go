@@ -17,6 +17,7 @@ type Repository interface {
 	Query(ctx context.Context, offset, limit int) ([]models.User, error)
 	Update(ctx context.Context, user models.User) error
 	Delete(ctx context.Context, id int) error
+	EmailExist(ctx context.Context, email string) bool
 }
 
 type repository struct {
@@ -51,8 +52,15 @@ func (r repository) Query(ctx context.Context, offset, limit int) ([]models.User
     return users, err
 }
 
+func (r repository) EmailExist(ctx context.Context, email string) bool {
+	var count int64
+    err := r.db.With(ctx).Select("COUNT(*)").Where(dbx.HashExp{"email": email}).One(&count)
+    return count > 0 && err == nil
+}
+
 func (r repository) Update(ctx context.Context, user models.User) error {
-	return r.db.With(ctx).Model(&user).Update()
+	db := *r.db.With(ctx).Model(&user)
+	return db.Update()
 }
 
 func (r repository) Delete(ctx context.Context, id int) error {

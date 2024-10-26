@@ -1,6 +1,11 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/go-ozzo/ozzo-validation/v4/is"
+)
 
 
 type User struct {
@@ -20,4 +25,23 @@ func (u User) GetID() int {
 // GetName returns the user name.
 func (u User) GetEmail() string {
 	return u.Email
+}
+
+func (User) TableName() string {
+    return "users"
+}
+
+type LoginRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type RegisterRequest User
+
+func (r LoginRequest) Validate() error {
+	return validation.ValidateStruct(&r, validation.Field(&r.Email, is.Email, validation.Required), validation.Field(&r.Password, validation.Required, validation.Length(6,100)))
+}
+
+func (r User) Validate() error {
+    return validation.ValidateStruct(&r, validation.Field(&r.Name, validation.Required), validation.Field(&r.Email, is.Email, validation.Required), validation.Field(&r.Password, validation.Required, validation.Length(6,100)))
 }

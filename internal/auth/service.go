@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/courage173/quiz-api/internal/models"
@@ -35,20 +36,21 @@ type service struct {
 
 type TokenIdentity interface {
 	// GetID returns the user ID.
-	GetID() string
+	GetID() int
 	// GetName returns the user name.
 	GetEmail() string
 }
 
-func NewService(signingKey string, tokenExpiration int, logger log.Logger) Service {
+func NewService(signingKey string, tokenExpiration int, logger log.Logger, userRepo users.Repository) Service {
 	return service{
-        signingKey:      signingKey,
-        tokenExpiration: tokenExpiration,
-        logger:           logger,
+        signingKey,
+        tokenExpiration,
+        logger,
+        userRepo,
     }
 }
 
-func (s service) Register(ctx context.Context, user models.User) (string, error) {
+func (s service) Register(ctx context.Context, data models.User) (string, error) {
 	// Implementation of user registration logic
     // Here, we assume the user is stored in a database and hashed password is stored securely
 
@@ -61,29 +63,26 @@ func (s service) Register(ctx context.Context, user models.User) (string, error)
     // return token, nil
 
 	//lowercase the email address
-	email := strings.ToLower(user.Email)
+	email := strings.ToLower(data.Email)
 
-	user, err := s.userRepo.GetByEmail(ctx, email)
-	if err != nil {
-		return "", err
-    }
+	userExist := s.userRepo.EmailExist(ctx, email)
 
-	if user.ID != 0 {
+	if userExist {
         return "", errors.BadRequest("User already registered")
     }
 
 	
-	passwordHashed, err := hashedPassword(user.Password)
+	passwordHashed, err := hashedPassword(data.Password)
 	if err!= nil {
         s.logger.Error(ctx, "Error hashing password", "error", err)
         return "", err
     }
 
 	// save both hased password and lowercased email
-	user.Password =  passwordHashed
-	user.Email = email
+	data.Password =  passwordHashed
+	data.Email = email
 
-	 error := s.userRepo.Create(ctx, user)
+	 error := s.userRepo.Create(ctx, data)
 
 	 if error!= nil {
          s.logger.Error(ctx, "Error creating user", "error", error)
@@ -95,7 +94,7 @@ func (s service) Register(ctx context.Context, user models.User) (string, error)
 
 func (s service) Login(ctx context.Context, email string, password string) (string, error) {
 	email = strings.ToLower(email)
-
+    fmt.Println( s.userRepo)
     user, err := s.userRepo.GetByEmail(ctx, email)
     if err!= nil {
         return "", err

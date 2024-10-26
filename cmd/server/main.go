@@ -24,7 +24,13 @@ import (
 	"github.com/courage173/quiz-api/internal/errors"
 	"github.com/courage173/quiz-api/internal/healthcheck"
 
+	"github.com/courage173/quiz-api/internal/auth"
+
+	"github.com/courage173/quiz-api/internal/users"
+
 	"github.com/courage173/quiz-api/pkg/log"
+
+	"github.com/courage173/quiz-api/pkg/utils"
 
 	"net/http"
 
@@ -116,7 +122,7 @@ func buildHandler(logger log.Logger, db *dbcontext.DB) http.Handler {
 
 	 healthcheck.RegisterHandlers(router, Version)
 
-	// rg := router.Group("/v1")
+	 rg := router.Group("/v1")
 
 	// authHandler := auth.Handler(cfg.JWTSigningKey)
 
@@ -124,11 +130,19 @@ func buildHandler(logger log.Logger, db *dbcontext.DB) http.Handler {
 	// 	album.NewService(album.NewRepository(db, logger), logger),
 	// 	authHandler, logger,
 	// )
+	jwtSigningKey := utils.GetEnv("JWT_SIGNING_KEY")
+	jwtExpiration := utils.GetEnv("JWT_EXPIRY_")
 
-	// auth.RegisterHandlers(rg.Group(""),
-	// 	auth.NewService(cfg.JWTSigningKey, cfg.JWTExpiration, logger),
-	// 	logger,
-	// )
+	if jwtExpiration == "" {
+		jwtExpiration = "3600"
+	}
+
+	expiry, _ := strconv.Atoi(jwtExpiration);
+
+	auth.RegisterHandlers(rg.Group(""),
+		auth.NewService(jwtSigningKey, expiry , logger, users.NewRepository(db, logger)),
+		logger,
+	)
 
 	return router
 }
