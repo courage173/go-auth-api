@@ -8,7 +8,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/courage173/quiz-api/pkg/log"
+	"github.com/courage173/go-auth-api/pkg/log"
 	routing "github.com/go-ozzo/ozzo-routing/v2"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )

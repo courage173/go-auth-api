@@ -5,17 +5,17 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/courage173/quiz-api/internal/models"
+	"github.com/courage173/go-auth-api/internal/models"
 
-	"github.com/courage173/quiz-api/internal/users"
+	"github.com/courage173/go-auth-api/internal/users"
 
-	"github.com/courage173/quiz-api/pkg/log"
+	"github.com/courage173/go-auth-api/pkg/log"
 
 	"golang.org/x/crypto/bcrypt"
 
 	"strings"
 
-	"github.com/courage173/quiz-api/internal/errors"
+	"github.com/courage173/go-auth-api/internal/errors"
 
 	"github.com/dgrijalva/jwt-go"
 )

@@ -3,11 +3,11 @@ package users
 import (
 	"context"
 
-	"github.com/courage173/quiz-api/internal/models"
-	"github.com/courage173/quiz-api/pkg/dbcontext"
+	"github.com/courage173/go-auth-api/internal/models"
+	"github.com/courage173/go-auth-api/pkg/dbcontext"
 	dbx "github.com/go-ozzo/ozzo-dbx"
 
-	"github.com/courage173/quiz-api/pkg/log"
+	"github.com/courage173/go-auth-api/pkg/log"
 )
 
 type Repository interface {

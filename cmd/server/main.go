@@ -17,20 +17,20 @@ import (
 
 	_ "github.com/lib/pq"
 
-	"github.com/courage173/quiz-api/pkg/accesslog"
+	"github.com/courage173/go-auth-api/pkg/accesslog"
 
-	"github.com/courage173/quiz-api/pkg/dbcontext"
+	"github.com/courage173/go-auth-api/pkg/dbcontext"
 
-	"github.com/courage173/quiz-api/internal/errors"
-	"github.com/courage173/quiz-api/internal/healthcheck"
+	"github.com/courage173/go-auth-api/internal/errors"
+	"github.com/courage173/go-auth-api/internal/healthcheck"
 
-	"github.com/courage173/quiz-api/internal/auth"
+	"github.com/courage173/go-auth-api/internal/auth"
 
-	"github.com/courage173/quiz-api/internal/users"
+	"github.com/courage173/go-auth-api/internal/users"
 
-	"github.com/courage173/quiz-api/pkg/log"
+	"github.com/courage173/go-auth-api/pkg/log"
 
-	"github.com/courage173/quiz-api/pkg/utils"
+	"github.com/courage173/go-auth-api/pkg/utils"
 
 	"net/http"
 

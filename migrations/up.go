@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/courage173/quiz-api/pkg/utils"
+	"github.com/courage173/go-auth-api/pkg/utils"
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"

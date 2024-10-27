@@ -1,4 +1,4 @@
-module github.com/courage173/quiz-api
+module github.com/courage173/go-auth-api
 
 go 1.23.2
 
